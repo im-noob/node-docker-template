@@ -1,0 +1,23 @@
+---
+
+services:
+  frontend:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    container_name: ${APP_NAME}-frontend
+    restart: unless-stopped
+    working_dir: /var/www
+    volumes:
+      - ./SRC_FOLDER:/var/www
+      - /var/www/node_modules
+    ports:
+      - ${APP_PORT_FRONTEND}:5173
+    networks:
+      - frontend
+    environment:
+      - CHOKIDAR_USEPOLLING=true # Fixes file watching issues inside Docker
+
+networks:
+  frontend:
+    driver: bridge
